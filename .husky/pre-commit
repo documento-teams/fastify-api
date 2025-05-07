@@ -1,0 +1,8 @@
+echo "Enabling pre-commit hook"
+echo "Running tests"
+
+bun run lint:fix
+bun run prettier
+
+
+echo "It's all good, you can commit now"
