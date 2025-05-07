@@ -6,17 +6,16 @@ const workspaceController = {
   createWorkspace: async (request, reply) => {
     try {
       const data = request.body;
-
       if (!data) {
         return reply.status(400).send({ message: "No data send" });
       }
-      if (!data.name || !data.userId) {
+      if (!data.name) {
         return reply.status(400).send({ message: "All fields are required" });
       }
       const workspace = await prisma.workspace.create({
         data: {
           name: data.name,
-          workspaceAuthorId: data.userId,
+          workspaceAuthorId: request.user.userId,
         },
       });
       return reply.status(201).send({ workspace });

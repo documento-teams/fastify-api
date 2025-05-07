@@ -17,11 +17,12 @@ export async function authenticate(request, reply, done) {
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    if (!decoded || typeof decoded !== "object" || !decoded.userId) {
+    if (!decoded || typeof decoded !== "object" || !decoded.id) {
       return reply.code(401).send({ error: "Invalid token payload" });
     }
+
     const user = await prisma.user.findUnique({
-      where: { id: decoded.userId },
+      where: { id: decoded.id },
     });
 
     if (!user) {
