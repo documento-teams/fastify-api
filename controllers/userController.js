@@ -43,7 +43,7 @@ const userController = {
         sameSite: "Strict",
         path: "/",
       });
-      return reply.status(200).send({ user});
+      return reply.status(200).send({ user });
     } catch (error) {
       console.error(error);
       return reply.status(500).send({ message: "Internal server error" });
