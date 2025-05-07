@@ -161,7 +161,9 @@ const userController = {
           email: email || user.email,
         },
       });
-      return reply.status(200).send({ message: "User updated successfully" });
+      return reply
+        .status(200)
+        .send({ message: "User updated successfully", updatedUser });
     } catch (error) {
       console.error("Error updating user:", error);
       return reply.status(500).send({ message: "Internal server error" });
