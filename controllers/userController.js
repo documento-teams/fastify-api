@@ -38,8 +38,12 @@ const userController = {
       const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
         expiresIn: "1d",
       });
-
-      return reply.status(200).send({ user, token });
+      reply.setCookie("token", token, {
+        httpOnly: true,
+        sameSite: "Strict",
+        path: "/",
+      });
+      return reply.status(200).send({ user});
     } catch (error) {
       console.error(error);
       return reply.status(500).send({ message: "Internal server error" });
@@ -83,14 +87,17 @@ const userController = {
       const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
         expiresIn: "1d",
       });
-
+      reply.setCookie("token", token, {
+        httpOnly: true,
+        sameSite: "Strict",
+        path: "/",
+      });
       return reply.status(201).send({
         user: {
           id: user.id,
           fullname: user.fullname,
           email: user.email,
         },
-        token,
       });
     } catch (error) {
       console.error("Error during registration:", error);

@@ -6,13 +6,7 @@ const prisma = new PrismaClient();
 
 export async function authenticate(request, reply, done) {
   try {
-    const authHeader = request.headers.authorization;
-
-    if (!authHeader || authHeader.startsWith("Bearer") === false) {
-      return reply.code(401).send({ error: "Authentication required" });
-    }
-
-    const token = authHeader.split(" ")[1];
+    const token = request.cookies.token;
     if (!token) {
       return reply.code(401).send({ error: "Authentication required" });
     }
@@ -22,13 +16,16 @@ export async function authenticate(request, reply, done) {
     }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    console.log("Decoded token:", decoded);
 
-    if (!decoded || typeof decoded !== "object" || !decoded.id) {
+    if (!decoded || typeof decoded !== "object" || !decoded.userId) {
       return reply.code(401).send({ error: "Invalid token payload" });
     }
     const user = await prisma.user.findUnique({
-      where: { id: decoded.id },
+      where: { id: decoded.userId },
     });
+
+    console.log("User found:", user);
 
     if (!user) {
       return reply.code(401).send({ error: "Invalid token" });

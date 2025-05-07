@@ -10,9 +10,7 @@ const fastify = Fastify({ logger: true });
 
 dotenv.config();
 
-fastify.register(fastifyCookie, {
-  secret: process.env.COOKIE_SECRET || process.env.JWT_SECRET,
-});
+fastify.register(fastifyCookie);
 
 fastify.register(routes, { prefix: "/api" });
 
