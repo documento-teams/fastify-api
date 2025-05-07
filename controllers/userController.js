@@ -119,12 +119,12 @@ const userController = {
       return reply.status(500).send({ message: "Internal server error" });
     }
   },
-  deleteUser: async (request, reply ) => {
+  deleteUser: async (request, reply) => {
     try {
       const userId = request.body.id;
       const user = await prisma.user.findUnique({
         where: { id: userId },
-      })
+      });
       if (!user) {
         return reply.status(404).send({ message: "User not found" });
       }
@@ -132,34 +132,34 @@ const userController = {
         where: { id: userId },
       });
       return reply.status(200).send({ message: "User deleted successfully" });
-    }catch (error) {
+    } catch (error) {
       console.error("Error deleting user:", error);
       return reply.status(500).send({ message: "Internal server error" });
     }
   },
-  updateUser: async (request , reply) => {
-    try{
-    const userId = request.body.id
-    const { fullname, email } = request.body;
-    const user = await prisma.user.findUnique({
-      where: { id: userId },
-    });
-    if (!user) {
-      return reply.status(404).send({ message: "User not found" });
+  updateUser: async (request, reply) => {
+    try {
+      const userId = request.body.id;
+      const { fullname, email } = request.body;
+      const user = await prisma.user.findUnique({
+        where: { id: userId },
+      });
+      if (!user) {
+        return reply.status(404).send({ message: "User not found" });
+      }
+      const updatedUser = await prisma.user.update({
+        where: { id: userId },
+        data: {
+          fullname: fullname || user.fullname,
+          email: email || user.email,
+        },
+      });
+      return reply.status(200).send({ message: "User updated successfully" });
+    } catch (error) {
+      console.error("Error updating user:", error);
+      return reply.status(500).send({ message: "Internal server error" });
     }
-    const updatedUser = await prisma.user.update({
-      where: { id: userId },
-      data: {
-        fullname: fullname || user.fullname,
-        email: email || user.email,
-      },
-    })
-    return reply.status(200).send({ message: "User updated successfully"});
-  }catch (error) {
-    console.error("Error updating user:", error);
-    return reply.status(500).send({ message: "Internal server error" });
-  }
-}
+  },
 };
 
 export default userController;
