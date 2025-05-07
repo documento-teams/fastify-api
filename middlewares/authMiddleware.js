@@ -16,7 +16,6 @@ export async function authenticate(request, reply, done) {
     }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    console.log("Decoded token:", decoded);
 
     if (!decoded || typeof decoded !== "object" || !decoded.userId) {
       return reply.code(401).send({ error: "Invalid token payload" });
@@ -25,7 +24,6 @@ export async function authenticate(request, reply, done) {
       where: { id: decoded.userId },
     });
 
-    console.log("User found:", user);
 
     if (!user) {
       return reply.code(401).send({ error: "Invalid token" });
