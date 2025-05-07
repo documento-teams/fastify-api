@@ -25,7 +25,6 @@ export async function authenticate(request, reply, done) {
       where: { id: decoded.id },
     });
 
-    console.log("User from DB:", user);
     if (!user) {
       return reply.code(401).send({ error: "Invalid token" });
     }
