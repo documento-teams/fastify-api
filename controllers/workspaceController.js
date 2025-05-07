@@ -6,7 +6,7 @@ const workspaceController = {
   createWorkspace: async (request, reply) => {
     try {
       const data = request.body;
-
+      console.log("Request body:", data);
       if (!data) {
         return reply.status(400).send({ message: "No data send" });
       }
@@ -16,9 +16,10 @@ const workspaceController = {
       const workspace = await prisma.workspace.create({
         data: {
           name: data.name,
-          workspaceAuthorId: data.userId,
+          workspaceAuthorId: data.id,
         },
       });
+      console.log("Workspace created:", workspace);
       return reply.status(201).send({ workspace });
     } catch (error) {
       console.error(error);
