@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 const documentController = {
   createDocument: async (request, reply) => {
     try {
-      const { name , content , workspaceId , userId } = request.body;
+      const { name, content, workspaceId, userId } = request.body;
       const document = await prisma.document.create({
         data: {
           name,
@@ -15,21 +15,21 @@ const documentController = {
         },
       });
       return reply.status(201).send(document);
-    }catch (error) {
+    } catch (error) {
       console.error("Error creating document:", error);
       reply.status(500).send({ error: "Internal Server Error" });
     }
   },
-  getAllDocuments: async (request , reply) => {
+  getAllDocuments: async (request, reply) => {
     try {
       const documents = await prisma.document.findMany({
-        include:{
-          documentAuthor:{
+        include: {
+          documentAuthor: {
             select: {
-              fullname: true
-            }
-          }
-        }
+              fullname: true,
+            },
+          },
+        },
       });
       return reply.status(200).send(documents);
     } catch (error) {
@@ -37,7 +37,7 @@ const documentController = {
       reply.status(500).send({ error: "Internal Server Error" });
     }
   },
-  getDomcumentByAuthorId: async (request , reply) => {
+  getDomcumentByAuthorId: async (request, reply) => {
     try {
       const { userId } = request.body;
       const documents = await prisma.document.findMany({
@@ -51,7 +51,7 @@ const documentController = {
       reply.status(500).send({ error: "Internal Server Error" });
     }
   },
-  deleteDocument: async (request , reply) => {
+  deleteDocument: async (request, reply) => {
     try {
       const { documentId } = request.body;
       await prisma.document.delete({
@@ -65,9 +65,9 @@ const documentController = {
       reply.status(500).send({ error: "Internal Server Error" });
     }
   },
-  updateDocument: async (request , reply) => {
+  updateDocument: async (request, reply) => {
     try {
-      const { documentId , name , content } = request.body;
+      const { documentId, name, content } = request.body;
       const updatedDocument = await prisma.document.update({
         where: {
           id: documentId,
