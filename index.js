@@ -10,12 +10,11 @@ const fastify = Fastify({ logger: true });
 
 dotenv.config();
 
-
 fastify.register(fastifyCookie, {
   secret: process.env.COOKIE_SECRET || process.env.JWT_SECRET,
 });
 
-fastify.register(routes, {prefix: "/api"});
+fastify.register(routes, { prefix: "/api" });
 
 fastify.register(cors, {
   origin: (origin, cb) => {
@@ -32,10 +31,12 @@ fastify.register(cors, {
 
 fastify.register(prismaPlugin);
 
-
 const start = async () => {
   try {
-    await fastify.listen({ port: 3000, host: process.env.API_URL || "0.0.0.0" });
+    await fastify.listen({
+      port: 3000,
+      host: process.env.API_URL || "0.0.0.0",
+    });
     console.log("server listening on port 3000");
   } catch (err) {
     console.log(err);

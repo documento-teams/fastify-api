@@ -45,17 +45,21 @@ const userController = {
       const { name, email, password } = request.body;
 
       if (!name || !email || !password) {
-        return reply.status(400).send({ message: "Tous les champs sont requis" });
+        return reply
+          .status(400)
+          .send({ message: "Tous les champs sont requis" });
       }
 
       const userExisting = await prisma.user.findUnique({
         where: {
-          email: email
-        }
+          email: email,
+        },
       });
 
       if (userExisting) {
-        return reply.status(400).send({ message: "Cet email est déjà utilisé" });
+        return reply
+          .status(400)
+          .send({ message: "Cet email est déjà utilisé" });
       }
 
       const hashedPassword = await bcrypt.hash(password, 10);
@@ -65,28 +69,26 @@ const userController = {
           name,
           email,
           password: hashedPassword,
-        }
+        },
       });
 
-      const token = jwt.sign(
-        { userId: user.id },
-        process.env.JWT_SECRET,
-        { expiresIn: "1d" }
-      );
+      const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
+        expiresIn: "1d",
+      });
 
       return reply.status(201).send({
         user: {
           id: user.id,
           name: user.name,
-          email: user.email
+          email: user.email,
         },
-        token
+        token,
       });
     } catch (error) {
       console.error("Error during registration:", error);
       return reply.status(500).send({ message: "Erreur interne du serveur" });
     }
-  }
+  },
 };
 
 export default userController;

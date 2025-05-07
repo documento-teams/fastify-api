@@ -4,11 +4,7 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-export async function authenticate(
-  request,
-  reply,
-  done
-) {
+export async function authenticate(request, reply, done) {
   try {
     const authHeader = request.headers.authorization;
 
@@ -42,6 +38,6 @@ export async function authenticate(
 
     done();
   } catch (error) {
-    return reply.code(401).send({error: error.message});
+    return reply.code(401).send({ error: error.message });
   }
 }
