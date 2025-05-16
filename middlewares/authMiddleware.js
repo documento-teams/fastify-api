@@ -4,7 +4,7 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-export async function authenticate(request, reply, done) {
+const authenticate = async (request, reply, done) => {
   try {
     const token = request.cookies.token;
     if (!token) {
@@ -23,6 +23,7 @@ export async function authenticate(request, reply, done) {
 
     const user = await prisma.user.findUnique({
       where: { id: decoded.id },
+      select: { id: true },
     });
 
     if (!user) {
@@ -32,7 +33,9 @@ export async function authenticate(request, reply, done) {
     request.user = { userId: user.id };
 
     done();
-  } catch (error) {
-    return reply.code(401).send({ error: error.message });
+  } catch {
+    return reply.code(401).send({ error: "Invalid Authentification" });
   }
-}
+};
+
+export default authenticate;
