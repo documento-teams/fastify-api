@@ -31,7 +31,6 @@ const authenticate = async (request, reply) => {
     }
 
     request.user = { userId: user.id };
-
   } catch {
     return reply.code(401).send({ error: "Invalid Authentification" });
   }
