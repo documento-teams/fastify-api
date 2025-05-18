@@ -1,5 +1,5 @@
 import userController from "../controllers/userController.js";
-import { authenticate } from "../middlewares/authMiddleware.js";
+import authenticate from "../middlewares/authMiddleware.js";
 
 const userRoutes = (fastify) => {
   fastify.post("/register", userController.register);
