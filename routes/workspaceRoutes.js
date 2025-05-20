@@ -1,5 +1,5 @@
 import workspaceController from "../controllers/workspaceController.js";
-import { authenticate } from "../middlewares/authMiddleware.js";
+import authenticate from "../middlewares/authMiddleware.js";
 
 const workspaceRoutes = (fastify) => {
   fastify.post(
