@@ -83,7 +83,6 @@ const documentController = {
       reply.status(500).send({ error: "Internal Server Error" });
     }
   },
-  // Ajouter cette nouvelle méthode
   getDocumentsByWorkspaceId: async (request, reply) => {
     try {
       const { id } = request.params;
@@ -91,7 +90,6 @@ const documentController = {
       if (isNaN(workspaceId)) {
         return reply.status(400).send({ error: "Invalid workspace ID" });
       }
-      // Vérifiez si l'utilisateur a accès à ce workspace (facultatif)
       const workspace = await prisma.workspace.findUnique({
         where: {
           id: workspaceId,
