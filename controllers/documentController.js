@@ -1,17 +1,26 @@
+/* eslint-disable no-undef */
 import { PrismaClient } from "@prisma/client";
+import jwt from "jsonwebtoken";
 
 const prisma = new PrismaClient();
 
 const documentController = {
   createDocument: async (request, reply) => {
     try {
-      const { name, content, workspaceId, documentAuthorId } = request.body;
+      const { name, content, workspaceId } = request.body;
+      const token = request.cookies.token;
+      if (!token) {
+        return reply.status(401).send({ error: "Authentication required" });
+      }
+
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
       const document = await prisma.document.create({
         data: {
           name,
           content,
           workspaceId,
-          documentAuthorId,
+          documentAuthorId: Number(decoded.id),
         },
       });
       return reply.status(201).send(document);
