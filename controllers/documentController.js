@@ -5,13 +5,13 @@ const prisma = new PrismaClient();
 const documentController = {
   createDocument: async (request, reply) => {
     try {
-      const { name, content, workspaceId, userId } = request.body;
+      const { name, content, workspaceId, documentAuthorId } = request.body;
       const document = await prisma.document.create({
         data: {
           name,
           content,
           workspaceId,
-          documentAuthorId: userId,
+          documentAuthorId,
         },
       });
       return reply.status(201).send(document);
@@ -37,9 +37,9 @@ const documentController = {
       reply.status(500).send({ error: "Internal Server Error" });
     }
   },
-  getDomcumentByAuthorId: async (request, reply) => {
+  getDocumentByAuthorId: async (request, reply) => {
     try {
-      const { userId } = request.body;
+      const { userId } = request.user.userId;
       const documents = await prisma.document.findMany({
         where: {
           documentAuthorId: userId,
@@ -80,6 +80,39 @@ const documentController = {
       return reply.status(200).send(updatedDocument);
     } catch (error) {
       console.error("Error updating document:", error);
+      reply.status(500).send({ error: "Internal Server Error" });
+    }
+  },
+  getDocumentsByWorkspaceId: async (request, reply) => {
+    try {
+      const { id } = request.params;
+      const workspaceId = parseInt(id, 10);
+      if (isNaN(workspaceId)) {
+        return reply.status(400).send({ error: "Invalid workspace ID" });
+      }
+      const workspace = await prisma.workspace.findUnique({
+        where: {
+          id: workspaceId,
+        },
+      });
+      if (!workspace) {
+        return reply.status(404).send({ error: "Workspace not found" });
+      }
+      const documents = await prisma.document.findMany({
+        where: {
+          workspaceId: workspaceId,
+        },
+        include: {
+          documentAuthor: {
+            select: {
+              fullname: true,
+            },
+          },
+        },
+      });
+      return reply.status(200).send(documents);
+    } catch (error) {
+      console.error("Error fetching documents by workspace ID:", error);
       reply.status(500).send({ error: "Internal Server Error" });
     }
   },

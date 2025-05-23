@@ -27,6 +27,11 @@ const workspaceRoutes = (fastify) => {
     { onRequest: authenticate },
     workspaceController.updateWorkspace
   );
+  fastify.get(
+    "/:id",
+    { onRequest: authenticate },
+    workspaceController.getWorkspaceById
+  );
 };
 
 export default workspaceRoutes;

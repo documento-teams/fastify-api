@@ -14,8 +14,8 @@ const documentRoutes = (fastify) => {
   );
   fastify.get(
     "/author",
-    { onResquest: authenticate },
-    documentController.getDomcumentByAuthorId
+    { onRequest: authenticate },
+    documentController.getDocumentByAuthorId
   );
   fastify.delete(
     "/delete",
@@ -26,6 +26,11 @@ const documentRoutes = (fastify) => {
     "/update",
     { onRequest: authenticate },
     documentController.updateDocument
+  );
+  fastify.get(
+    "/workspace/:id",
+    { onRequest: authenticate },
+    documentController.getDocumentsByWorkspaceId
   );
 };
 
