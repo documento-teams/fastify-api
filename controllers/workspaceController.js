@@ -91,6 +91,26 @@ const workspaceController = {
       return reply.status(500).send({ message: "Internal server error" });
     }
   },
+  getWorkspaceById: async (request, reply) => {
+    try {
+      const id = request.params.id;
+      const workspace = await prisma.workspace.findUnique({
+        where: {
+          id: Number(id),
+        },
+        include: {
+          workspaceAuthor: true,
+        },
+      });
+      if (!workspace) {
+        return reply.status(404).send({ message: "Workspace not found" });
+      }
+      return reply.status(200).send({ workspace });
+    } catch (error) {
+      console.error(error);
+      return reply.status(500).send({ message: "Internal server error" });
+    }
+  },
 };
 
 export default workspaceController;
