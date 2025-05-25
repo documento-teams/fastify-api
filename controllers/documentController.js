@@ -5,13 +5,14 @@ const prisma = new PrismaClient();
 const documentController = {
   createDocument: async (request, reply) => {
     try {
-      const { name, content, workspaceId, documentAuthorId } = request.body;
+      const userId = request.user.userId;
+      const { name, content, workspaceId } = request.body;
       const document = await prisma.document.create({
         data: {
           name,
           content,
           workspaceId,
-          documentAuthorId,
+          documentAuthorId: userId,
         },
       });
       return reply.status(201).send(document);
