@@ -12,8 +12,11 @@ const workspaceRoutes = (fastify) => {
         required: ["name"],
         properties: {
           name: { type: "string", description: "Nom de l'espace de travail" },
-          description: { type: "string", description: "Description de l'espace de travail" }
-        }
+          description: {
+            type: "string",
+            description: "Description de l'espace de travail",
+          },
+        },
       },
       response: {
         201: {
@@ -25,8 +28,8 @@ const workspaceRoutes = (fastify) => {
             description: { type: "string" },
             authorId: { type: "integer" },
             createdAt: { type: "string", format: "date-time" },
-            updatedAt: { type: "string", format: "date-time" }
-          }
+            updatedAt: { type: "string", format: "date-time" },
+          },
         },
         401: {
           description: "Non authentifié",
@@ -34,9 +37,9 @@ const workspaceRoutes = (fastify) => {
           properties: {
             message: {
               type: "string",
-              example: "Unauthorized - Token manquant ou invalide"
-            }
-          }
+              example: "Unauthorized - Token manquant ou invalide",
+            },
+          },
         },
         400: {
           description: "Données invalides",
@@ -44,9 +47,9 @@ const workspaceRoutes = (fastify) => {
           properties: {
             message: {
               type: "string",
-              example: "Le nom de l'espace de travail est requis"
-            }
-          }
+              example: "Le nom de l'espace de travail est requis",
+            },
+          },
         },
         500: {
           description: "Erreur serveur",
@@ -54,14 +57,14 @@ const workspaceRoutes = (fastify) => {
           properties: {
             message: {
               type: "string",
-              example: "Internal server error"
-            }
-          }
-        }
-      }
+              example: "Internal server error",
+            },
+          },
+        },
+      },
     },
     onRequest: authenticate,
-    handler: workspaceController.createWorkspace
+    handler: workspaceController.createWorkspace,
   });
 
   fastify.get("/all", {
@@ -81,9 +84,9 @@ const workspaceRoutes = (fastify) => {
               description: { type: "string" },
               authorId: { type: "integer" },
               createdAt: { type: "string", format: "date-time" },
-              updatedAt: { type: "string", format: "date-time" }
-            }
-          }
+              updatedAt: { type: "string", format: "date-time" },
+            },
+          },
         },
         401: {
           description: "Non authentifié",
@@ -91,9 +94,9 @@ const workspaceRoutes = (fastify) => {
           properties: {
             message: {
               type: "string",
-              example: "Unauthorized - Token manquant ou invalide"
-            }
-          }
+              example: "Unauthorized - Token manquant ou invalide",
+            },
+          },
         },
         500: {
           description: "Erreur serveur",
@@ -101,14 +104,14 @@ const workspaceRoutes = (fastify) => {
           properties: {
             message: {
               type: "string",
-              example: "Internal server error"
-            }
-          }
-        }
-      }
+              example: "Internal server error",
+            },
+          },
+        },
+      },
     },
     onRequest: authenticate,
-    handler: workspaceController.getAllWorkspaces
+    handler: workspaceController.getAllWorkspaces,
   });
 
   fastify.get("/author", {
@@ -128,9 +131,9 @@ const workspaceRoutes = (fastify) => {
               description: { type: "string" },
               authorId: { type: "integer" },
               createdAt: { type: "string", format: "date-time" },
-              updatedAt: { type: "string", format: "date-time" }
-            }
-          }
+              updatedAt: { type: "string", format: "date-time" },
+            },
+          },
         },
         401: {
           description: "Non authentifié",
@@ -138,9 +141,9 @@ const workspaceRoutes = (fastify) => {
           properties: {
             message: {
               type: "string",
-              example: "Unauthorized - Token manquant ou invalide"
-            }
-          }
+              example: "Unauthorized - Token manquant ou invalide",
+            },
+          },
         },
         500: {
           description: "Erreur serveur",
@@ -148,14 +151,14 @@ const workspaceRoutes = (fastify) => {
           properties: {
             message: {
               type: "string",
-              example: "Internal server error"
-            }
-          }
-        }
-      }
+              example: "Internal server error",
+            },
+          },
+        },
+      },
     },
     onRequest: authenticate,
-    handler: workspaceController.getWorkspaceByAuthorId
+    handler: workspaceController.getWorkspaceByAuthorId,
   });
 
   fastify.delete("/delete", {
@@ -167,8 +170,11 @@ const workspaceRoutes = (fastify) => {
         type: "object",
         required: ["id"],
         properties: {
-          id: { type: "integer", description: "ID de l'espace de travail à supprimer" }
-        }
+          id: {
+            type: "integer",
+            description: "ID de l'espace de travail à supprimer",
+          },
+        },
       },
       response: {
         200: {
@@ -177,9 +183,9 @@ const workspaceRoutes = (fastify) => {
           properties: {
             message: {
               type: "string",
-              example: "Espace de travail supprimé avec succès"
-            }
-          }
+              example: "Espace de travail supprimé avec succès",
+            },
+          },
         },
         401: {
           description: "Non authentifié",
@@ -187,9 +193,9 @@ const workspaceRoutes = (fastify) => {
           properties: {
             message: {
               type: "string",
-              example: "Unauthorized - Token manquant ou invalide"
-            }
-          }
+              example: "Unauthorized - Token manquant ou invalide",
+            },
+          },
         },
         403: {
           description: "Non autorisé",
@@ -197,9 +203,10 @@ const workspaceRoutes = (fastify) => {
           properties: {
             message: {
               type: "string",
-              example: "Vous n'êtes pas autorisé à supprimer cet espace de travail"
-            }
-          }
+              example:
+                "Vous n'êtes pas autorisé à supprimer cet espace de travail",
+            },
+          },
         },
         404: {
           description: "Non trouvé",
@@ -207,9 +214,9 @@ const workspaceRoutes = (fastify) => {
           properties: {
             message: {
               type: "string",
-              example: "Espace de travail non trouvé"
-            }
-          }
+              example: "Espace de travail non trouvé",
+            },
+          },
         },
         500: {
           description: "Erreur serveur",
@@ -217,14 +224,14 @@ const workspaceRoutes = (fastify) => {
           properties: {
             message: {
               type: "string",
-              example: "Internal server error"
-            }
-          }
-        }
-      }
+              example: "Internal server error",
+            },
+          },
+        },
+      },
     },
     onRequest: authenticate,
-    handler: workspaceController.deleteWorkspace
+    handler: workspaceController.deleteWorkspace,
   });
 
   fastify.put("/update", {
@@ -238,8 +245,8 @@ const workspaceRoutes = (fastify) => {
         properties: {
           id: { type: "integer", description: "ID de l'espace de travail" },
           name: { type: "string", description: "Nouveau nom" },
-          description: { type: "string", description: "Nouvelle description" }
-        }
+          description: { type: "string", description: "Nouvelle description" },
+        },
       },
       response: {
         200: {
@@ -251,8 +258,8 @@ const workspaceRoutes = (fastify) => {
             description: { type: "string" },
             authorId: { type: "integer" },
             createdAt: { type: "string", format: "date-time" },
-            updatedAt: { type: "string", format: "date-time" }
-          }
+            updatedAt: { type: "string", format: "date-time" },
+          },
         },
         401: {
           description: "Non authentifié",
@@ -260,9 +267,9 @@ const workspaceRoutes = (fastify) => {
           properties: {
             message: {
               type: "string",
-              example: "Unauthorized - Token manquant ou invalide"
-            }
-          }
+              example: "Unauthorized - Token manquant ou invalide",
+            },
+          },
         },
         403: {
           description: "Non autorisé",
@@ -270,9 +277,10 @@ const workspaceRoutes = (fastify) => {
           properties: {
             message: {
               type: "string",
-              example: "Vous n'êtes pas autorisé à modifier cet espace de travail"
-            }
-          }
+              example:
+                "Vous n'êtes pas autorisé à modifier cet espace de travail",
+            },
+          },
         },
         404: {
           description: "Non trouvé",
@@ -280,9 +288,9 @@ const workspaceRoutes = (fastify) => {
           properties: {
             message: {
               type: "string",
-              example: "Espace de travail non trouvé"
-            }
-          }
+              example: "Espace de travail non trouvé",
+            },
+          },
         },
         500: {
           description: "Erreur serveur",
@@ -290,14 +298,14 @@ const workspaceRoutes = (fastify) => {
           properties: {
             message: {
               type: "string",
-              example: "Internal server error"
-            }
-          }
-        }
-      }
+              example: "Internal server error",
+            },
+          },
+        },
+      },
     },
     onRequest: authenticate,
-    handler: workspaceController.updateWorkspace
+    handler: workspaceController.updateWorkspace,
   });
 
   fastify.get("/:id", {
@@ -309,8 +317,8 @@ const workspaceRoutes = (fastify) => {
         type: "object",
         required: ["id"],
         properties: {
-          id: { type: "integer", description: "ID de l'espace de travail" }
-        }
+          id: { type: "integer", description: "ID de l'espace de travail" },
+        },
       },
       response: {
         200: {
@@ -322,8 +330,8 @@ const workspaceRoutes = (fastify) => {
             description: { type: "string" },
             authorId: { type: "integer" },
             createdAt: { type: "string", format: "date-time" },
-            updatedAt: { type: "string", format: "date-time" }
-          }
+            updatedAt: { type: "string", format: "date-time" },
+          },
         },
         401: {
           description: "Non authentifié",
@@ -331,9 +339,9 @@ const workspaceRoutes = (fastify) => {
           properties: {
             message: {
               type: "string",
-              example: "Unauthorized - Token manquant ou invalide"
-            }
-          }
+              example: "Unauthorized - Token manquant ou invalide",
+            },
+          },
         },
         404: {
           description: "Non trouvé",
@@ -341,9 +349,9 @@ const workspaceRoutes = (fastify) => {
           properties: {
             message: {
               type: "string",
-              example: "Espace de travail non trouvé"
-            }
-          }
+              example: "Espace de travail non trouvé",
+            },
+          },
         },
         500: {
           description: "Erreur serveur",
@@ -351,14 +359,14 @@ const workspaceRoutes = (fastify) => {
           properties: {
             message: {
               type: "string",
-              example: "Internal server error"
-            }
-          }
-        }
-      }
+              example: "Internal server error",
+            },
+          },
+        },
+      },
     },
     onRequest: authenticate,
-    handler: workspaceController.getWorkspaceById
+    handler: workspaceController.getWorkspaceById,
   });
 };
 

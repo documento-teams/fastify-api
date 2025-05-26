@@ -18,11 +18,11 @@ fastify.register(swagger, {
     info: {
       title: "Documento API",
       description: "API pour l'application Documento",
-      version: "1.0.0"
+      version: "1.0.0",
     },
     externalDocs: {
       url: "https://swagger.io",
-      description: "Find more info here"
+      description: "Find more info here",
     },
     host: `${process.env.API_URL || "localhost"}:3000`,
     schemes: ["http", "https"],
@@ -31,16 +31,16 @@ fastify.register(swagger, {
     tags: [
       { name: "user", description: "User related endpoints" },
       { name: "workspace", description: "Workspace related endpoints" },
-      { name: "document", description: "Document related endpoints" }
+      { name: "document", description: "Document related endpoints" },
     ],
     securityDefinitions: {
       cookieAuth: {
         type: "apiKey",
         name: "token",
-        in: "cookie"
-      }
-    }
-  }
+        in: "cookie",
+      },
+    },
+  },
 });
 
 // Registrer Swagger UI
@@ -48,8 +48,8 @@ fastify.register(swaggerUI, {
   routePrefix: "/documentation",
   uiConfig: {
     docExpansion: "list",
-    deepLinking: false
-  }
+    deepLinking: false,
+  },
 });
 
 fastify.register(fastifyCookie);

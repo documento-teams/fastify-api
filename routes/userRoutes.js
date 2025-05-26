@@ -10,10 +10,21 @@ const userRoutes = (fastify) => {
         type: "object",
         required: ["fullname", "email", "password"],
         properties: {
-          fullname: { type: "string", description: "Nom complet de l'utilisateur" },
-          email: { type: "string", format: "email", description: "Email de l'utilisateur" },
-          password: { type: "string", minLength: 6, description: "Mot de passe (min 6 caractères)" }
-        }
+          fullname: {
+            type: "string",
+            description: "Nom complet de l'utilisateur",
+          },
+          email: {
+            type: "string",
+            format: "email",
+            description: "Email de l'utilisateur",
+          },
+          password: {
+            type: "string",
+            minLength: 6,
+            description: "Mot de passe (min 6 caractères)",
+          },
+        },
       },
       response: {
         201: {
@@ -25,10 +36,10 @@ const userRoutes = (fastify) => {
               properties: {
                 id: { type: "integer" },
                 fullname: { type: "string" },
-                email: { type: "string" }
-              }
-            }
-          }
+                email: { type: "string" },
+              },
+            },
+          },
         },
         400: {
           description: "Données invalides",
@@ -36,9 +47,13 @@ const userRoutes = (fastify) => {
           properties: {
             message: {
               type: "string",
-              examples: ["Tous les champs sont requis", "Cet email est déjà utilisé", "Format d'email invalide"]
-            }
-          }
+              examples: [
+                "Tous les champs sont requis",
+                "Cet email est déjà utilisé",
+                "Format d'email invalide",
+              ],
+            },
+          },
         },
         500: {
           description: "Erreur serveur",
@@ -46,13 +61,13 @@ const userRoutes = (fastify) => {
           properties: {
             message: {
               type: "string",
-              example: "Internal server error"
-            }
-          }
-        }
-      }
+              example: "Internal server error",
+            },
+          },
+        },
+      },
     },
-    handler: userController.register
+    handler: userController.register,
   });
 
   fastify.post("/login", {
@@ -63,9 +78,13 @@ const userRoutes = (fastify) => {
         type: "object",
         required: ["email", "password"],
         properties: {
-          email: { type: "string", format: "email", description: "Email de l'utilisateur" },
-          password: { type: "string", description: "Mot de passe" }
-        }
+          email: {
+            type: "string",
+            format: "email",
+            description: "Email de l'utilisateur",
+          },
+          password: { type: "string", description: "Mot de passe" },
+        },
       },
       response: {
         200: {
@@ -77,10 +96,10 @@ const userRoutes = (fastify) => {
               properties: {
                 id: { type: "integer" },
                 fullname: { type: "string" },
-                email: { type: "string" }
-              }
-            }
-          }
+                email: { type: "string" },
+              },
+            },
+          },
         },
         400: {
           description: "Identifiants invalides",
@@ -88,9 +107,9 @@ const userRoutes = (fastify) => {
           properties: {
             message: {
               type: "string",
-              examples: ["Email ou mot de passe incorrect", "Email non trouvé"]
-            }
-          }
+              examples: ["Email ou mot de passe incorrect", "Email non trouvé"],
+            },
+          },
         },
         500: {
           description: "Erreur serveur",
@@ -98,13 +117,13 @@ const userRoutes = (fastify) => {
           properties: {
             message: {
               type: "string",
-              example: "Internal server error"
-            }
-          }
-        }
-      }
+              example: "Internal server error",
+            },
+          },
+        },
+      },
     },
-    handler: userController.login
+    handler: userController.login,
   });
 
   fastify.get("/me", {
@@ -119,8 +138,8 @@ const userRoutes = (fastify) => {
           properties: {
             id: { type: "integer" },
             fullname: { type: "string" },
-            email: { type: "string" }
-          }
+            email: { type: "string" },
+          },
         },
         401: {
           description: "Non authentifié",
@@ -128,9 +147,9 @@ const userRoutes = (fastify) => {
           properties: {
             message: {
               type: "string",
-              example: "Unauthorized - Token manquant ou invalide"
-            }
-          }
+              example: "Unauthorized - Token manquant ou invalide",
+            },
+          },
         },
         500: {
           description: "Erreur serveur",
@@ -138,14 +157,14 @@ const userRoutes = (fastify) => {
           properties: {
             message: {
               type: "string",
-              example: "Internal server error"
-            }
-          }
-        }
-      }
+              example: "Internal server error",
+            },
+          },
+        },
+      },
     },
     onRequest: [authenticate],
-    handler: userController.getme
+    handler: userController.getme,
   });
 
   fastify.delete("/delete", {
@@ -160,9 +179,9 @@ const userRoutes = (fastify) => {
           properties: {
             message: {
               type: "string",
-              example: "Utilisateur supprimé avec succès"
-            }
-          }
+              example: "Utilisateur supprimé avec succès",
+            },
+          },
         },
         401: {
           description: "Non authentifié",
@@ -170,9 +189,9 @@ const userRoutes = (fastify) => {
           properties: {
             message: {
               type: "string",
-              example: "Unauthorized - Token manquant ou invalide"
-            }
-          }
+              example: "Unauthorized - Token manquant ou invalide",
+            },
+          },
         },
         500: {
           description: "Erreur serveur",
@@ -180,14 +199,14 @@ const userRoutes = (fastify) => {
           properties: {
             message: {
               type: "string",
-              example: "Internal server error"
-            }
-          }
-        }
-      }
+              example: "Internal server error",
+            },
+          },
+        },
+      },
     },
     onRequest: [authenticate],
-    handler: userController.deleteUser
+    handler: userController.deleteUser,
   });
 
   fastify.put("/update", {
@@ -200,8 +219,8 @@ const userRoutes = (fastify) => {
         properties: {
           fullname: { type: "string" },
           email: { type: "string", format: "email" },
-          password: { type: "string", minLength: 6 }
-        }
+          password: { type: "string", minLength: 6 },
+        },
       },
       response: {
         200: {
@@ -210,8 +229,8 @@ const userRoutes = (fastify) => {
           properties: {
             id: { type: "integer" },
             fullname: { type: "string" },
-            email: { type: "string" }
-          }
+            email: { type: "string" },
+          },
         },
         401: {
           description: "Non authentifié",
@@ -219,9 +238,9 @@ const userRoutes = (fastify) => {
           properties: {
             message: {
               type: "string",
-              example: "Unauthorized - Token manquant ou invalide"
-            }
-          }
+              example: "Unauthorized - Token manquant ou invalide",
+            },
+          },
         },
         400: {
           description: "Données invalides",
@@ -229,9 +248,13 @@ const userRoutes = (fastify) => {
           properties: {
             message: {
               type: "string",
-              examples: ["Cet email est déjà utilisé", "Format d'email invalide", "Le mot de passe doit contenir au moins 6 caractères"]
-            }
-          }
+              examples: [
+                "Cet email est déjà utilisé",
+                "Format d'email invalide",
+                "Le mot de passe doit contenir au moins 6 caractères",
+              ],
+            },
+          },
         },
         500: {
           description: "Erreur serveur",
@@ -239,14 +262,14 @@ const userRoutes = (fastify) => {
           properties: {
             message: {
               type: "string",
-              example: "Internal server error"
-            }
-          }
-        }
-      }
+              example: "Internal server error",
+            },
+          },
+        },
+      },
     },
     onRequest: [authenticate],
-    handler: userController.updateUser
+    handler: userController.updateUser,
   });
 };
 

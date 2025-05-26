@@ -13,8 +13,11 @@ const documentRoutes = (fastify) => {
         properties: {
           name: { type: "string", description: "Nom du document" },
           content: { type: "string", description: "Contenu du document" },
-          workspaceId: { type: "integer", description: "ID de l'espace de travail" }
-        }
+          workspaceId: {
+            type: "integer",
+            description: "ID de l'espace de travail",
+          },
+        },
       },
       response: {
         201: {
@@ -27,8 +30,8 @@ const documentRoutes = (fastify) => {
             authorId: { type: "integer" },
             workspaceId: { type: "integer" },
             createdAt: { type: "string", format: "date-time" },
-            updatedAt: { type: "string", format: "date-time" }
-          }
+            updatedAt: { type: "string", format: "date-time" },
+          },
         },
         401: {
           description: "Non authentifié",
@@ -36,9 +39,9 @@ const documentRoutes = (fastify) => {
           properties: {
             message: {
               type: "string",
-              example: "Unauthorized - Token manquant ou invalide"
-            }
-          }
+              example: "Unauthorized - Token manquant ou invalide",
+            },
+          },
         },
         400: {
           description: "Données invalides",
@@ -46,9 +49,13 @@ const documentRoutes = (fastify) => {
           properties: {
             message: {
               type: "string",
-              examples: ["Le nom du document est requis", "L'ID de l'espace de travail est requis", "L'espace de travail n'existe pas"]
-            }
-          }
+              examples: [
+                "Le nom du document est requis",
+                "L'ID de l'espace de travail est requis",
+                "L'espace de travail n'existe pas",
+              ],
+            },
+          },
         },
         403: {
           description: "Non autorisé",
@@ -56,9 +63,10 @@ const documentRoutes = (fastify) => {
           properties: {
             message: {
               type: "string",
-              example: "Vous n'êtes pas autorisé à créer un document dans cet espace de travail"
-            }
-          }
+              example:
+                "Vous n'êtes pas autorisé à créer un document dans cet espace de travail",
+            },
+          },
         },
         500: {
           description: "Erreur serveur",
@@ -66,14 +74,14 @@ const documentRoutes = (fastify) => {
           properties: {
             message: {
               type: "string",
-              example: "Internal server error"
-            }
-          }
-        }
-      }
+              example: "Internal server error",
+            },
+          },
+        },
+      },
     },
     onRequest: authenticate,
-    handler: documentController.createDocument
+    handler: documentController.createDocument,
   });
 
   fastify.get("/all", {
@@ -94,9 +102,9 @@ const documentRoutes = (fastify) => {
               authorId: { type: "integer" },
               workspaceId: { type: "integer" },
               createdAt: { type: "string", format: "date-time" },
-              updatedAt: { type: "string", format: "date-time" }
-            }
-          }
+              updatedAt: { type: "string", format: "date-time" },
+            },
+          },
         },
         401: {
           description: "Non authentifié",
@@ -104,9 +112,9 @@ const documentRoutes = (fastify) => {
           properties: {
             message: {
               type: "string",
-              example: "Unauthorized - Token manquant ou invalide"
-            }
-          }
+              example: "Unauthorized - Token manquant ou invalide",
+            },
+          },
         },
         500: {
           description: "Erreur serveur",
@@ -114,14 +122,14 @@ const documentRoutes = (fastify) => {
           properties: {
             message: {
               type: "string",
-              example: "Internal server error"
-            }
-          }
-        }
-      }
+              example: "Internal server error",
+            },
+          },
+        },
+      },
     },
     onRequest: authenticate,
-    handler: documentController.getAllDocuments
+    handler: documentController.getAllDocuments,
   });
 
   fastify.get("/author", {
@@ -142,9 +150,9 @@ const documentRoutes = (fastify) => {
               authorId: { type: "integer" },
               workspaceId: { type: "integer" },
               createdAt: { type: "string", format: "date-time" },
-              updatedAt: { type: "string", format: "date-time" }
-            }
-          }
+              updatedAt: { type: "string", format: "date-time" },
+            },
+          },
         },
         401: {
           description: "Non authentifié",
@@ -152,9 +160,9 @@ const documentRoutes = (fastify) => {
           properties: {
             message: {
               type: "string",
-              example: "Unauthorized - Token manquant ou invalide"
-            }
-          }
+              example: "Unauthorized - Token manquant ou invalide",
+            },
+          },
         },
         500: {
           description: "Erreur serveur",
@@ -162,14 +170,14 @@ const documentRoutes = (fastify) => {
           properties: {
             message: {
               type: "string",
-              example: "Internal server error"
-            }
-          }
-        }
-      }
+              example: "Internal server error",
+            },
+          },
+        },
+      },
     },
     onRequest: authenticate,
-    handler: documentController.getDocumentByAuthorId
+    handler: documentController.getDocumentByAuthorId,
   });
 
   fastify.delete("/delete", {
@@ -181,8 +189,8 @@ const documentRoutes = (fastify) => {
         type: "object",
         required: ["id"],
         properties: {
-          id: { type: "integer", description: "ID du document à supprimer" }
-        }
+          id: { type: "integer", description: "ID du document à supprimer" },
+        },
       },
       response: {
         200: {
@@ -191,9 +199,9 @@ const documentRoutes = (fastify) => {
           properties: {
             message: {
               type: "string",
-              example: "Document supprimé avec succès"
-            }
-          }
+              example: "Document supprimé avec succès",
+            },
+          },
         },
         401: {
           description: "Non authentifié",
@@ -201,9 +209,9 @@ const documentRoutes = (fastify) => {
           properties: {
             message: {
               type: "string",
-              example: "Unauthorized - Token manquant ou invalide"
-            }
-          }
+              example: "Unauthorized - Token manquant ou invalide",
+            },
+          },
         },
         403: {
           description: "Non autorisé",
@@ -211,9 +219,9 @@ const documentRoutes = (fastify) => {
           properties: {
             message: {
               type: "string",
-              example: "Vous n'êtes pas autorisé à supprimer ce document"
-            }
-          }
+              example: "Vous n'êtes pas autorisé à supprimer ce document",
+            },
+          },
         },
         404: {
           description: "Non trouvé",
@@ -221,9 +229,9 @@ const documentRoutes = (fastify) => {
           properties: {
             message: {
               type: "string",
-              example: "Document non trouvé"
-            }
-          }
+              example: "Document non trouvé",
+            },
+          },
         },
         500: {
           description: "Erreur serveur",
@@ -231,14 +239,14 @@ const documentRoutes = (fastify) => {
           properties: {
             message: {
               type: "string",
-              example: "Internal server error"
-            }
-          }
-        }
-      }
+              example: "Internal server error",
+            },
+          },
+        },
+      },
     },
     onRequest: authenticate,
-    handler: documentController.deleteDocument
+    handler: documentController.deleteDocument,
   });
 
   fastify.put("/update", {
@@ -252,8 +260,8 @@ const documentRoutes = (fastify) => {
         properties: {
           id: { type: "integer", description: "ID du document" },
           name: { type: "string", description: "Nouveau nom" },
-          content: { type: "string", description: "Nouveau contenu" }
-        }
+          content: { type: "string", description: "Nouveau contenu" },
+        },
       },
       response: {
         200: {
@@ -266,8 +274,8 @@ const documentRoutes = (fastify) => {
             authorId: { type: "integer" },
             workspaceId: { type: "integer" },
             createdAt: { type: "string", format: "date-time" },
-            updatedAt: { type: "string", format: "date-time" }
-          }
+            updatedAt: { type: "string", format: "date-time" },
+          },
         },
         401: {
           description: "Non authentifié",
@@ -275,9 +283,9 @@ const documentRoutes = (fastify) => {
           properties: {
             message: {
               type: "string",
-              example: "Unauthorized - Token manquant ou invalide"
-            }
-          }
+              example: "Unauthorized - Token manquant ou invalide",
+            },
+          },
         },
         403: {
           description: "Non autorisé",
@@ -285,9 +293,9 @@ const documentRoutes = (fastify) => {
           properties: {
             message: {
               type: "string",
-              example: "Vous n'êtes pas autorisé à modifier ce document"
-            }
-          }
+              example: "Vous n'êtes pas autorisé à modifier ce document",
+            },
+          },
         },
         404: {
           description: "Non trouvé",
@@ -295,9 +303,9 @@ const documentRoutes = (fastify) => {
           properties: {
             message: {
               type: "string",
-              example: "Document non trouvé"
-            }
-          }
+              example: "Document non trouvé",
+            },
+          },
         },
         500: {
           description: "Erreur serveur",
@@ -305,14 +313,14 @@ const documentRoutes = (fastify) => {
           properties: {
             message: {
               type: "string",
-              example: "Internal server error"
-            }
-          }
-        }
-      }
+              example: "Internal server error",
+            },
+          },
+        },
+      },
     },
     onRequest: authenticate,
-    handler: documentController.updateDocument
+    handler: documentController.updateDocument,
   });
 
   fastify.get("/workspace/:id", {
@@ -324,8 +332,8 @@ const documentRoutes = (fastify) => {
         type: "object",
         required: ["id"],
         properties: {
-          id: { type: "integer", description: "ID de l'espace de travail" }
-        }
+          id: { type: "integer", description: "ID de l'espace de travail" },
+        },
       },
       response: {
         200: {
@@ -340,9 +348,9 @@ const documentRoutes = (fastify) => {
               authorId: { type: "integer" },
               workspaceId: { type: "integer" },
               createdAt: { type: "string", format: "date-time" },
-              updatedAt: { type: "string", format: "date-time" }
-            }
-          }
+              updatedAt: { type: "string", format: "date-time" },
+            },
+          },
         },
         401: {
           description: "Non authentifié",
@@ -350,9 +358,9 @@ const documentRoutes = (fastify) => {
           properties: {
             message: {
               type: "string",
-              example: "Unauthorized - Token manquant ou invalide"
-            }
-          }
+              example: "Unauthorized - Token manquant ou invalide",
+            },
+          },
         },
         403: {
           description: "Non autorisé",
@@ -360,9 +368,10 @@ const documentRoutes = (fastify) => {
           properties: {
             message: {
               type: "string",
-              example: "Vous n'êtes pas autorisé à accéder à cet espace de travail"
-            }
-          }
+              example:
+                "Vous n'êtes pas autorisé à accéder à cet espace de travail",
+            },
+          },
         },
         404: {
           description: "Espace de travail non trouvé",
@@ -370,9 +379,9 @@ const documentRoutes = (fastify) => {
           properties: {
             message: {
               type: "string",
-              example: "Espace de travail non trouvé"
-            }
-          }
+              example: "Espace de travail non trouvé",
+            },
+          },
         },
         500: {
           description: "Erreur serveur",
@@ -380,14 +389,14 @@ const documentRoutes = (fastify) => {
           properties: {
             message: {
               type: "string",
-              example: "Internal server error"
-            }
-          }
-        }
-      }
+              example: "Internal server error",
+            },
+          },
+        },
+      },
     },
     onRequest: authenticate,
-    handler: documentController.getDocumentsByWorkspaceId
+    handler: documentController.getDocumentsByWorkspaceId,
   });
 
   fastify.get("/:id", {
@@ -399,8 +408,8 @@ const documentRoutes = (fastify) => {
         type: "object",
         required: ["id"],
         properties: {
-          id: { type: "integer", description: "ID du document" }
-        }
+          id: { type: "integer", description: "ID du document" },
+        },
       },
       response: {
         200: {
@@ -413,8 +422,8 @@ const documentRoutes = (fastify) => {
             authorId: { type: "integer" },
             workspaceId: { type: "integer" },
             createdAt: { type: "string", format: "date-time" },
-            updatedAt: { type: "string", format: "date-time" }
-          }
+            updatedAt: { type: "string", format: "date-time" },
+          },
         },
         401: {
           description: "Non authentifié",
@@ -422,9 +431,9 @@ const documentRoutes = (fastify) => {
           properties: {
             message: {
               type: "string",
-              example: "Unauthorized - Token manquant ou invalide"
-            }
-          }
+              example: "Unauthorized - Token manquant ou invalide",
+            },
+          },
         },
         403: {
           description: "Non autorisé",
@@ -432,9 +441,9 @@ const documentRoutes = (fastify) => {
           properties: {
             message: {
               type: "string",
-              example: "Vous n'êtes pas autorisé à accéder à ce document"
-            }
-          }
+              example: "Vous n'êtes pas autorisé à accéder à ce document",
+            },
+          },
         },
         404: {
           description: "Document non trouvé",
@@ -442,9 +451,9 @@ const documentRoutes = (fastify) => {
           properties: {
             message: {
               type: "string",
-              example: "Document non trouvé"
-            }
-          }
+              example: "Document non trouvé",
+            },
+          },
         },
         500: {
           description: "Erreur serveur",
@@ -452,14 +461,14 @@ const documentRoutes = (fastify) => {
           properties: {
             message: {
               type: "string",
-              example: "Internal server error"
-            }
-          }
-        }
-      }
+              example: "Internal server error",
+            },
+          },
+        },
+      },
     },
     onRequest: authenticate,
-    handler: documentController.getDocumentById
+    handler: documentController.getDocumentById,
   });
 };
 
