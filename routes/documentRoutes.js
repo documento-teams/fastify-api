@@ -63,7 +63,8 @@ const documentRoutes = (fastify) => {
           properties: {
             message: {
               type: "string",
-              example: "You are not authorized to create a document in this workspace",
+              example:
+                "You are not authorized to create a document in this workspace",
             },
           },
         },
