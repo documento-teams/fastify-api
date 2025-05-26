@@ -58,16 +58,20 @@ const documentRoutes = (fastify) => {
     handler: documentController.deleteDocument,
   });
 
-  fastify.put("/update", {
+  fastify.put("/update/:id", {
     schema: {
       tags: ["document"],
       description: "Update a document",
       security: [{ cookieAuth: [] }],
+      params: {
+        type: "object",
+        properties: {
+          id: { type: "number", pattern: "^[0-9]+$" },
+        },
+      },
       body: {
         type: "object",
-        required: ["id"],
         properties: {
-          id: { type: "integer" },
           name: { type: "string" },
           content: { type: "string" },
         },
