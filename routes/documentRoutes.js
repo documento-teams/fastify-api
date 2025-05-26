@@ -1,4 +1,4 @@
-import documentController from "../controllers/documentController";
+import documentController from "../controllers/documentController.js";
 import authenticate from "../middlewares/authMiddleware.js";
 
 const documentRoutes = (fastify) => {

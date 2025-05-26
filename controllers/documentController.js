@@ -125,6 +125,23 @@ const documentController = {
       reply.status(500).send({ error: "Internal Server Error" });
     }
   },
+  getDocumentById: async (request, reply) => {
+    try {
+      const { id } = request.params;
+      const document = await prisma.document.findUnique({
+        where: {
+          id: parseInt(id),
+        },
+      });
+      if (!document) {
+        return reply.status(404).send({ error: "Document not found" });
+      }
+      return reply.status(200).send(document);
+    } catch {
+      console.error("Error fetching document by ID:", error);
+      reply.status(500).send({ error: "Internal Server Error" });
+    }
+  },
 };
 
 export default documentController;
