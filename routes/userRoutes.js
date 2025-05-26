@@ -5,30 +5,30 @@ const userRoutes = (fastify) => {
   fastify.post("/register", {
     schema: {
       tags: ["user"],
-      description: "Enregistrer un nouvel utilisateur",
+      description: "Register a new user",
       body: {
         type: "object",
         required: ["fullname", "email", "password"],
         properties: {
           fullname: {
             type: "string",
-            description: "Nom complet de l'utilisateur",
+            description: "User's full name",
           },
           email: {
             type: "string",
             format: "email",
-            description: "Email de l'utilisateur",
+            description: "User's email",
           },
           password: {
             type: "string",
             minLength: 6,
-            description: "Mot de passe (min 6 caractères)",
+            description: "Password (min 6 characters)",
           },
         },
       },
       response: {
         201: {
-          description: "Utilisateur créé avec succès",
+          description: "User successfully created",
           type: "object",
           properties: {
             user: {
@@ -42,21 +42,21 @@ const userRoutes = (fastify) => {
           },
         },
         400: {
-          description: "Données invalides",
+          description: "Invalid data",
           type: "object",
           properties: {
             message: {
               type: "string",
               examples: [
-                "Tous les champs sont requis",
-                "Cet email est déjà utilisé",
-                "Format d'email invalide",
+                "All fields are required",
+                "This email is already in use",
+                "Invalid email format",
               ],
             },
           },
         },
         500: {
-          description: "Erreur serveur",
+          description: "Server error",
           type: "object",
           properties: {
             message: {
@@ -73,7 +73,7 @@ const userRoutes = (fastify) => {
   fastify.post("/login", {
     schema: {
       tags: ["user"],
-      description: "Connecter un utilisateur",
+      description: "Log in a user",
       body: {
         type: "object",
         required: ["email", "password"],
@@ -81,14 +81,14 @@ const userRoutes = (fastify) => {
           email: {
             type: "string",
             format: "email",
-            description: "Email de l'utilisateur",
+            description: "User's email",
           },
-          password: { type: "string", description: "Mot de passe" },
+          password: { type: "string", description: "Password" },
         },
       },
       response: {
         200: {
-          description: "Connexion réussie",
+          description: "Login successful",
           type: "object",
           properties: {
             user: {
@@ -102,17 +102,17 @@ const userRoutes = (fastify) => {
           },
         },
         400: {
-          description: "Identifiants invalides",
+          description: "Invalid credentials",
           type: "object",
           properties: {
             message: {
               type: "string",
-              examples: ["Email ou mot de passe incorrect", "Email non trouvé"],
+              examples: ["Email or password incorrect", "Email not found"],
             },
           },
         },
         500: {
-          description: "Erreur serveur",
+          description: "Server error",
           type: "object",
           properties: {
             message: {
@@ -129,11 +129,11 @@ const userRoutes = (fastify) => {
   fastify.get("/me", {
     schema: {
       tags: ["user"],
-      description: "Récupérer les informations de l'utilisateur connecté",
+      description: "Get information of the currently logged in user",
       security: [{ cookieAuth: [] }],
       response: {
         200: {
-          description: "Informations utilisateur",
+          description: "User information",
           type: "object",
           properties: {
             id: { type: "integer" },
@@ -142,17 +142,17 @@ const userRoutes = (fastify) => {
           },
         },
         401: {
-          description: "Non authentifié",
+          description: "Not authenticated",
           type: "object",
           properties: {
             message: {
               type: "string",
-              example: "Unauthorized - Token manquant ou invalide",
+              example: "Unauthorized - Missing or invalid token",
             },
           },
         },
         500: {
-          description: "Erreur serveur",
+          description: "Server error",
           type: "object",
           properties: {
             message: {
@@ -170,31 +170,31 @@ const userRoutes = (fastify) => {
   fastify.delete("/delete", {
     schema: {
       tags: ["user"],
-      description: "Supprimer un utilisateur",
+      description: "Delete a user",
       security: [{ cookieAuth: [] }],
       response: {
         200: {
-          description: "Utilisateur supprimé",
+          description: "User deleted",
           type: "object",
           properties: {
             message: {
               type: "string",
-              example: "Utilisateur supprimé avec succès",
+              example: "User successfully deleted",
             },
           },
         },
         401: {
-          description: "Non authentifié",
+          description: "Not authenticated",
           type: "object",
           properties: {
             message: {
               type: "string",
-              example: "Unauthorized - Token manquant ou invalide",
+              example: "Unauthorized - Missing or invalid token",
             },
           },
         },
         500: {
-          description: "Erreur serveur",
+          description: "Server error",
           type: "object",
           properties: {
             message: {
@@ -212,7 +212,7 @@ const userRoutes = (fastify) => {
   fastify.put("/update", {
     schema: {
       tags: ["user"],
-      description: "Mettre à jour un utilisateur",
+      description: "Update a user",
       security: [{ cookieAuth: [] }],
       body: {
         type: "object",
@@ -224,7 +224,7 @@ const userRoutes = (fastify) => {
       },
       response: {
         200: {
-          description: "Utilisateur mis à jour",
+          description: "User updated",
           type: "object",
           properties: {
             id: { type: "integer" },
@@ -233,31 +233,31 @@ const userRoutes = (fastify) => {
           },
         },
         401: {
-          description: "Non authentifié",
+          description: "Not authenticated",
           type: "object",
           properties: {
             message: {
               type: "string",
-              example: "Unauthorized - Token manquant ou invalide",
+              example: "Unauthorized - Missing or invalid token",
             },
           },
         },
         400: {
-          description: "Données invalides",
+          description: "Invalid data",
           type: "object",
           properties: {
             message: {
               type: "string",
               examples: [
-                "Cet email est déjà utilisé",
-                "Format d'email invalide",
-                "Le mot de passe doit contenir au moins 6 caractères",
+                "This email is already in use",
+                "Invalid email format",
+                "Password must be at least 6 characters",
               ],
             },
           },
         },
         500: {
-          description: "Erreur serveur",
+          description: "Server error",
           type: "object",
           properties: {
             message: {

@@ -5,22 +5,22 @@ const workspaceRoutes = (fastify) => {
   fastify.post("/create", {
     schema: {
       tags: ["workspace"],
-      description: "Créer un nouvel espace de travail",
+      description: "Create a new workspace",
       security: [{ cookieAuth: [] }],
       body: {
         type: "object",
         required: ["name"],
         properties: {
-          name: { type: "string", description: "Nom de l'espace de travail" },
+          name: { type: "string", description: "Workspace name" },
           description: {
             type: "string",
-            description: "Description de l'espace de travail",
+            description: "Workspace description",
           },
         },
       },
       response: {
         201: {
-          description: "Espace de travail créé",
+          description: "Workspace created",
           type: "object",
           properties: {
             id: { type: "integer" },
@@ -32,27 +32,27 @@ const workspaceRoutes = (fastify) => {
           },
         },
         401: {
-          description: "Non authentifié",
+          description: "Not authenticated",
           type: "object",
           properties: {
             message: {
               type: "string",
-              example: "Unauthorized - Token manquant ou invalide",
+              example: "Unauthorized - Missing or invalid token",
             },
           },
         },
         400: {
-          description: "Données invalides",
+          description: "Invalid data",
           type: "object",
           properties: {
             message: {
               type: "string",
-              example: "Le nom de l'espace de travail est requis",
+              example: "Workspace name is required",
             },
           },
         },
         500: {
-          description: "Erreur serveur",
+          description: "Server error",
           type: "object",
           properties: {
             message: {
@@ -70,11 +70,11 @@ const workspaceRoutes = (fastify) => {
   fastify.get("/all", {
     schema: {
       tags: ["workspace"],
-      description: "Récupérer tous les espaces de travail",
+      description: "Get all workspaces",
       security: [{ cookieAuth: [] }],
       response: {
         200: {
-          description: "Liste des espaces de travail",
+          description: "List of workspaces",
           type: "array",
           items: {
             type: "object",
@@ -89,17 +89,17 @@ const workspaceRoutes = (fastify) => {
           },
         },
         401: {
-          description: "Non authentifié",
+          description: "Not authenticated",
           type: "object",
           properties: {
             message: {
               type: "string",
-              example: "Unauthorized - Token manquant ou invalide",
+              example: "Unauthorized - Missing or invalid token",
             },
           },
         },
         500: {
-          description: "Erreur serveur",
+          description: "Server error",
           type: "object",
           properties: {
             message: {
@@ -117,11 +117,11 @@ const workspaceRoutes = (fastify) => {
   fastify.get("/author", {
     schema: {
       tags: ["workspace"],
-      description: "Récupérer les espaces de travail de l'utilisateur connecté",
+      description: "Get workspaces for the current user",
       security: [{ cookieAuth: [] }],
       response: {
         200: {
-          description: "Espaces de travail de l'utilisateur",
+          description: "User's workspaces",
           type: "array",
           items: {
             type: "object",
@@ -136,17 +136,17 @@ const workspaceRoutes = (fastify) => {
           },
         },
         401: {
-          description: "Non authentifié",
+          description: "Not authenticated",
           type: "object",
           properties: {
             message: {
               type: "string",
-              example: "Unauthorized - Token manquant ou invalide",
+              example: "Unauthorized - Missing or invalid token",
             },
           },
         },
         500: {
-          description: "Erreur serveur",
+          description: "Server error",
           type: "object",
           properties: {
             message: {
@@ -164,7 +164,7 @@ const workspaceRoutes = (fastify) => {
   fastify.delete("/delete", {
     schema: {
       tags: ["workspace"],
-      description: "Supprimer un espace de travail",
+      description: "Delete a workspace",
       security: [{ cookieAuth: [] }],
       body: {
         type: "object",
@@ -172,54 +172,53 @@ const workspaceRoutes = (fastify) => {
         properties: {
           id: {
             type: "integer",
-            description: "ID de l'espace de travail à supprimer",
+            description: "ID of the workspace to delete",
           },
         },
       },
       response: {
         200: {
-          description: "Espace de travail supprimé",
+          description: "Workspace deleted",
           type: "object",
           properties: {
             message: {
               type: "string",
-              example: "Espace de travail supprimé avec succès",
+              example: "Workspace successfully deleted",
             },
           },
         },
         401: {
-          description: "Non authentifié",
+          description: "Not authenticated",
           type: "object",
           properties: {
             message: {
               type: "string",
-              example: "Unauthorized - Token manquant ou invalide",
+              example: "Unauthorized - Missing or invalid token",
             },
           },
         },
         403: {
-          description: "Non autorisé",
+          description: "Not authorized",
           type: "object",
           properties: {
             message: {
               type: "string",
-              example:
-                "Vous n'êtes pas autorisé à supprimer cet espace de travail",
+              example: "You are not authorized to delete this workspace",
             },
           },
         },
         404: {
-          description: "Non trouvé",
+          description: "Not found",
           type: "object",
           properties: {
             message: {
               type: "string",
-              example: "Espace de travail non trouvé",
+              example: "Workspace not found",
             },
           },
         },
         500: {
-          description: "Erreur serveur",
+          description: "Server error",
           type: "object",
           properties: {
             message: {
@@ -237,20 +236,20 @@ const workspaceRoutes = (fastify) => {
   fastify.put("/update", {
     schema: {
       tags: ["workspace"],
-      description: "Mettre à jour un espace de travail",
+      description: "Update a workspace",
       security: [{ cookieAuth: [] }],
       body: {
         type: "object",
         required: ["id"],
         properties: {
-          id: { type: "integer", description: "ID de l'espace de travail" },
-          name: { type: "string", description: "Nouveau nom" },
-          description: { type: "string", description: "Nouvelle description" },
+          id: { type: "integer", description: "Workspace ID" },
+          name: { type: "string", description: "New name" },
+          description: { type: "string", description: "New description" },
         },
       },
       response: {
         200: {
-          description: "Espace de travail mis à jour",
+          description: "Workspace updated",
           type: "object",
           properties: {
             id: { type: "integer" },
@@ -262,38 +261,37 @@ const workspaceRoutes = (fastify) => {
           },
         },
         401: {
-          description: "Non authentifié",
+          description: "Not authenticated",
           type: "object",
           properties: {
             message: {
               type: "string",
-              example: "Unauthorized - Token manquant ou invalide",
+              example: "Unauthorized - Missing or invalid token",
             },
           },
         },
         403: {
-          description: "Non autorisé",
+          description: "Not authorized",
           type: "object",
           properties: {
             message: {
               type: "string",
-              example:
-                "Vous n'êtes pas autorisé à modifier cet espace de travail",
+              example: "You are not authorized to modify this workspace",
             },
           },
         },
         404: {
-          description: "Non trouvé",
+          description: "Not found",
           type: "object",
           properties: {
             message: {
               type: "string",
-              example: "Espace de travail non trouvé",
+              example: "Workspace not found",
             },
           },
         },
         500: {
-          description: "Erreur serveur",
+          description: "Server error",
           type: "object",
           properties: {
             message: {
@@ -311,18 +309,18 @@ const workspaceRoutes = (fastify) => {
   fastify.get("/:id", {
     schema: {
       tags: ["workspace"],
-      description: "Récupérer un espace de travail par son ID",
+      description: "Get a workspace by ID",
       security: [{ cookieAuth: [] }],
       params: {
         type: "object",
         required: ["id"],
         properties: {
-          id: { type: "integer", description: "ID de l'espace de travail" },
+          id: { type: "integer", description: "Workspace ID" },
         },
       },
       response: {
         200: {
-          description: "Espace de travail",
+          description: "Workspace",
           type: "object",
           properties: {
             id: { type: "integer" },
@@ -334,27 +332,27 @@ const workspaceRoutes = (fastify) => {
           },
         },
         401: {
-          description: "Non authentifié",
+          description: "Not authenticated",
           type: "object",
           properties: {
             message: {
               type: "string",
-              example: "Unauthorized - Token manquant ou invalide",
+              example: "Unauthorized - Missing or invalid token",
             },
           },
         },
         404: {
-          description: "Non trouvé",
+          description: "Not found",
           type: "object",
           properties: {
             message: {
               type: "string",
-              example: "Espace de travail non trouvé",
+              example: "Workspace not found",
             },
           },
         },
         500: {
-          description: "Erreur serveur",
+          description: "Server error",
           type: "object",
           properties: {
             message: {
