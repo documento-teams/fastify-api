@@ -76,10 +76,11 @@ const documentController = {
   },
   updateDocument: async (request, reply) => {
     try {
-      const { documentId, name, content } = request.body;
+      const { name, content } = request.body;
+      const { id } = request.params;
       const updatedDocument = await prisma.document.update({
         where: {
-          id: documentId,
+          id: parseInt(id),
         },
         data: {
           name,
