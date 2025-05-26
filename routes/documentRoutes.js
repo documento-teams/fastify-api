@@ -32,6 +32,11 @@ const documentRoutes = (fastify) => {
     { onRequest: authenticate },
     documentController.getDocumentsByWorkspaceId
   );
+  fastify.get(
+    "/:id",
+    { onRequest: authenticate },
+    documentController.getDocumentById
+  );
 };
 
 export default documentRoutes;
