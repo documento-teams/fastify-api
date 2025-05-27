@@ -4,15 +4,9 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-export async function authenticate(request, reply, done) {
+const authenticate = async (request, reply) => {
   try {
-    const authHeader = request.headers.authorization;
-
-    if (!authHeader || authHeader.startsWith("Bearer") === false) {
-      return reply.code(401).send({ error: "Authentication required" });
-    }
-
-    const token = authHeader.split(" ")[1];
+    const token = request.cookies.token;
     if (!token) {
       return reply.code(401).send({ error: "Authentication required" });
     }
@@ -26,8 +20,10 @@ export async function authenticate(request, reply, done) {
     if (!decoded || typeof decoded !== "object" || !decoded.id) {
       return reply.code(401).send({ error: "Invalid token payload" });
     }
+
     const user = await prisma.user.findUnique({
       where: { id: decoded.id },
+      select: { id: true },
     });
 
     if (!user) {
@@ -35,9 +31,9 @@ export async function authenticate(request, reply, done) {
     }
 
     request.user = { userId: user.id };
-
-    done();
-  } catch (error) {
-    return reply.code(401).send({ error: error.message });
+  } catch {
+    return reply.code(401).send({ error: "Invalid Authentification" });
   }
-}
+};
+
+export default authenticate;
