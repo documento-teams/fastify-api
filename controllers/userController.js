@@ -118,7 +118,7 @@ const userController = {
 
       return reply.status(200).send({
         id: user.id,
-        name: user.name,
+        fullname: user.fullname,
         email: user.email,
       });
     } catch (error) {
