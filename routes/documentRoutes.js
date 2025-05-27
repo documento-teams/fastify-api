@@ -41,12 +41,12 @@ const documentRoutes = (fastify) => {
     handler: documentController.getDocumentByAuthorId,
   });
 
-  fastify.delete("/delete", {
+  fastify.delete("/delete/:id", {
     schema: {
       tags: ["document"],
       description: "Delete a document",
       security: [{ cookieAuth: [] }],
-      body: {
+      params: {
         type: "object",
         required: ["id"],
         properties: {

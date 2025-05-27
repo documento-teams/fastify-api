@@ -60,20 +60,47 @@ const documentController = {
       reply.status(500).send({ error: "Internal Server Error" });
     }
   },
+
   deleteDocument: async (request, reply) => {
     try {
-      const { documentId } = request.body;
+      const { id } = request.params;
+      const userId = request.user.userId;
+
+      const document = await prisma.document.findUnique({
+        where: { id: id },
+      });
+
+      if (!document) {
+        return reply.status(404).send({ error: "Document not found" });
+      }
+
+      if (document.documentAuthorId !== userId) {
+        const workspace = await prisma.workspace.findUnique({
+          where: { id: document.workspaceId },
+        });
+
+        if (!workspace || workspace.workspaceAuthorId !== userId) {
+          return reply
+            .status(403)
+            .send({ error: "Not authorized to delete this document" });
+        }
+      }
+
       await prisma.document.delete({
         where: {
-          id: documentId,
+          id: Number(id),
         },
       });
-      return reply.status(200).send("document deleted successfully");
+
+      return reply
+        .status(200)
+        .send({ message: "Document deleted successfully" });
     } catch (error) {
       console.error("Error deleting document:", error);
       reply.status(500).send({ error: "Internal Server Error" });
     }
   },
+
   updateDocument: async (request, reply) => {
     try {
       const { name, content } = request.body;
@@ -129,9 +156,11 @@ const documentController = {
   getDocumentById: async (request, reply) => {
     try {
       const { id } = request.params;
+      const userId = request.user.userId;
       const document = await prisma.document.findUnique({
         where: {
           id: parseInt(id),
+          documentAuthorId: userId,
         },
       });
       if (!document) {
