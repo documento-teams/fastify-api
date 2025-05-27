@@ -105,6 +105,28 @@ const documentController = {
     try {
       const { name, content } = request.body;
       const { id } = request.params;
+      const userId = request.user.userId;
+
+      const document = await prisma.document.findUnique({
+        where: { id: parseInt(id) },
+        include: {
+          workspace: true,
+        },
+      });
+
+      if (!document) {
+        return reply.status(404).send({ error: "Document not found" });
+      }
+
+      const isDocumentOwner = document.documentAuthorId === userId;
+      const isWorkspaceOwner = document.workspace.workspaceAuthorId === userId;
+
+      if (!isDocumentOwner && !isWorkspaceOwner) {
+        return reply.status(403).send({
+          error: "Not authorized to edit this document. You can only view it.",
+        });
+      }
+
       const updatedDocument = await prisma.document.update({
         where: {
           id: parseInt(id),
@@ -113,8 +135,32 @@ const documentController = {
           name,
           content,
         },
+        include: {
+          documentAuthor: {
+            select: {
+              fullname: true,
+            },
+          },
+          workspace: {
+            select: {
+              id: true,
+              name: true,
+              workspaceAuthorId: true,
+            },
+          },
+        },
       });
-      return reply.status(200).send(updatedDocument);
+
+      const documentWithPermissions = {
+        ...updatedDocument,
+        permissions: {
+          canEdit: true,
+          canDelete: true,
+          readOnly: false,
+        },
+      };
+
+      return reply.status(200).send(documentWithPermissions);
     } catch (error) {
       console.error("Error updating document:", error);
       reply.status(500).send({ error: "Internal Server Error" });
@@ -157,18 +203,48 @@ const documentController = {
     try {
       const { id } = request.params;
       const userId = request.user.userId;
+
       const document = await prisma.document.findUnique({
         where: {
-          id: parseInt(id),
-          documentAuthorId: userId,
+          id: Number(id),
+        },
+        include: {
+          documentAuthor: {
+            select: {
+              id: true,
+              fullname: true,
+            },
+          },
+          workspace: {
+            select: {
+              id: true,
+              name: true,
+              workspaceAuthorId: true,
+            },
+          },
         },
       });
+
       if (!document) {
         return reply.status(404).send({ error: "Document not found" });
       }
-      return reply.status(200).send(document);
-    } catch {
-      console.error("Error fetching document by ID:", error);
+
+      const isDocumentOwner = document.documentAuthorId === userId;
+      const isWorkspaceOwner = document.workspace.workspaceAuthorId === userId;
+      const canEdit = isDocumentOwner || isWorkspaceOwner;
+
+      const documentWithPermissions = {
+        ...document,
+        permissions: {
+          canEdit,
+          canDelete: canEdit,
+          readOnly: !canEdit,
+        },
+      };
+
+      return reply.status(200).send(documentWithPermissions);
+    } catch (error) {
+      console.error("Error fetching document:", error);
       reply.status(500).send({ error: "Internal Server Error" });
     }
   },
