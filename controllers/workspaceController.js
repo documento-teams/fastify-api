@@ -73,7 +73,9 @@ const workspaceController = {
       }
 
       if (workspace.workspaceAuthorId !== userId) {
-        return reply.status(403).send({ message: "Not authorized to delete this workspace" });
+        return reply
+          .status(403)
+          .send({ message: "Not authorized to delete this workspace" });
       }
 
       await prisma.workspace.delete({
@@ -95,7 +97,6 @@ const workspaceController = {
       const { id, name } = request.body;
       const userId = request.user.userId;
 
-
       const workspace = await prisma.workspace.findUnique({
         where: { id: Number(id) },
       });
@@ -105,7 +106,9 @@ const workspaceController = {
       }
 
       if (workspace.workspaceAuthorId !== userId) {
-        return reply.status(403).send({ message: "Not authorized to update this workspace" });
+        return reply
+          .status(403)
+          .send({ message: "Not authorized to update this workspace" });
       }
 
       const updatedWorkspace = await prisma.workspace.update({
@@ -142,7 +145,9 @@ const workspaceController = {
       }
 
       if (workspace.workspaceAuthorId !== userId) {
-        return reply.status(403).send({ message: "Not authorized to access this workspace" });
+        return reply
+          .status(403)
+          .send({ message: "Not authorized to access this workspace" });
       }
       return reply.status(200).send(workspace);
     } catch (error) {
