@@ -123,7 +123,7 @@ const documentController = {
 
       if (!isDocumentOwner && !isWorkspaceOwner) {
         return reply.status(403).send({
-          error: "Not authorized to edit this document. You can only view it."
+          error: "Not authorized to edit this document. You can only view it.",
         });
       }
 
