@@ -23,7 +23,7 @@ const workspaceRoutes = (fastify) => {
   fastify.get("/all", {
     schema: {
       tags: ["workspace"],
-      description: "Get all workspaces",
+      description: "Get all workspaces (admin)",
       security: [{ cookieAuth: [] }],
     },
     onRequest: authenticate,
@@ -40,16 +40,15 @@ const workspaceRoutes = (fastify) => {
     handler: workspaceController.getWorkspaceByAuthorId,
   });
 
-  fastify.delete("/delete", {
+  fastify.delete("/:id", {
     schema: {
       tags: ["workspace"],
       description: "Delete a workspace",
       security: [{ cookieAuth: [] }],
-      body: {
+      params: {
         type: "object",
-        required: ["id"],
         properties: {
-          id: { type: "integer" },
+          id: { type: "string" },
         },
       },
     },
